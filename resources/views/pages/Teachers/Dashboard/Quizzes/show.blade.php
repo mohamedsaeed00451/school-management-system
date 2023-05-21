@@ -1,0 +1,87 @@
+@extends('layouts.master')
+@section('css')
+    @toastr_css
+@section('title')
+    {{ trans('Dashboard_trans.reports_quizzes') }}
+@stop
+@endsection
+@section('page-header')
+<!-- breadcrumb -->
+@section('PageTitle')
+    {{ trans('Dashboard_trans.reports_quizzes') }}
+@stop
+<!-- breadcrumb -->
+@endsection
+@section('content')
+<!-- row -->
+<div class="row">
+    <div class="col-md-12 mb-30">
+        <div class="card card-statistics h-100">
+            <div class="card-body">
+                <div class="col-xl-12 mb-30">
+                    <div class="card card-statistics h-100">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table  table-hover table-sm table-bordered p-0"
+                                    data-page-length="50" style="text-align: center">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ trans('questions_trans.quizze_name') }}</th>
+                                            <th>{{ trans('Students_trans.name') }}</th>
+                                            <th>{{ trans('Teacher_trans.date') }}</th>
+                                            <th>{{ trans('Students_trans.Grade') }}</th>
+                                            <th>{{ trans('Students_trans.classrooms') }}</th>
+                                            <th>{{ trans('Students_trans.section') }}</th>
+                                            <th>{{ trans('questions_trans.score') }}</th>
+                                            <th>{{ trans('Students_trans.Processes') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($degrees as $degree)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $degree->quizze->Name }}</td>
+                                                <td>{{ $degree->student->Name }}</td>
+                                                <td>{{ $degree->Date }}</td>
+                                                <td>{{ $degree->quizze->grade->Name }}</td>
+                                                <td>{{ $degree->quizze->classroom->Name_Class }}</td>
+                                                <td>{{ $degree->quizze->section->Name_Section }}</td>
+                                                <td>
+                                                    @if($degree->Abuse == 1 )
+                                                        <label style="color: red">{{trans('Message_trans.abuse')}}</label>
+                                                    @else
+                                                        <label style="color: green">{{ $degree->Score }}</label>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($degree->Abuse == 1 )
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                                data-toggle="modal"
+                                                                data-target="#repetQuizze{{ $degree->id }}" title="delete"><i
+                                                                class="fa fa-refresh"></i></button>
+                                                    @else
+                                                        <button type="button" class="btn btn-info btn-sm"
+                                                                data-toggle="modal"
+                                                                data-target="#repetQuizze{{ $degree->id }}" title="delete"><i
+                                                                class="fa fa-refresh"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @include('pages.Teachers.Dashboard.Quizzes.repetQuizze')
+                                        @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- row closed -->
+@endsection
+@section('js')
+@toastr_js
+@toastr_render
+@endsection
